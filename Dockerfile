@@ -21,7 +21,7 @@ USER notes:notes
 
 EXPOSE 8081
 
-ENV SPRING_DATASOURCE_URL=jdbc:sqlite:/app/data/tacocloud.db \
+ENV SPRING_DATASOURCE_URL=jdbc:sqlite:/app/data/notes-reminders.db \
     JAVA_OPTS="-Xms256m -Xmx512m"
 
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
