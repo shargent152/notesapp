@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <form method="post" action="/login">
+        <input type="text" name="username" placeholder="Username"/>
+        <input type="password" name="password" placeholder="Password"/>
+        <button type="submit">Login</button>
+    </form>
+    <p th:if="${loginError}" class="error" style="color: crimson;">Wrong Username or Password</p>
+    
+</html>

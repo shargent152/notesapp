@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <form th:object ="${reminder}"method="post" th:action="@{/reminderEditor/{id}(id=${reminder.id})}">
+        <input th:field ="*{Message}" placeholder="Message"/>
+        <input th:field ="*{time}" type="datetime-local"/>
+        <button type="submit">Save</button>
+    </form>
+    
+</html>

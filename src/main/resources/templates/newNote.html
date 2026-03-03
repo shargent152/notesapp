@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <form th:object ="${note}"method="post" action="/addNotes">
+        <input th:field ="*{title}" placeholder="TITLE"/>
+        <input th:field ="*{Message}" placeholder="NOTE"/>
+        <button type="submit">Save</button>
+    </form>
+    
+</html>

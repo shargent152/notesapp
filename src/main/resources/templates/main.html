@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<html>
+    <h1>HELLO Your notes and reminders will show up here</h1>
+    <a href="/addNotes">Click here to add a new note</a>
+    <a href="/addReminder">Click here to add a reminder</a>
+    
+    <ul>
+        <h1>Heres your notes</h1>
+        <li th:each="n : ${notes}">
+            <span th:text = "${n.title}"></span>
+            <a th:href="@{/noteEditor/{id}(id=${n.id})}">Edit</a>
+            <a th:href="@{/noteDelete/{id}(id=${n.id})}">Delete</a>
+        </li>
+    </ul>
+    <ul>
+        <h1>Heres your reminders</h1>
+        <li th:each="r : ${reminders}">
+            <span th:text = "${r.Message}"></span>
+            <a th:href="@{/reminderEditor/{id}(id=${r.id})}">Edit</a>
+            <a th:href="@{/reminderDelete/{id}(id=${r.id})}">Delete</a>
+        </li>
+    </ul>
+    <script th:inline = "javascript">
+       var reminders = [];
+       /*[# th:each="r : ${reminders}"]*/
+       reminders.push({
+        message: [[${r.message}]],
+        time: [[${#temporals.format(r.time, "yyyy-MM-dd'T'HH:mm")}]]
+    });
+    /*[/]*/
+    console.log("Reminders:", reminders);
+    const currentDate = new Date();
+    for (let index = 0; index < reminders.length; index++) {
+        const time = new Date(reminders[index].time);
+        console.log(time);
+        console.log(currentDate > time);
+        if(time < currentDate){
+            alert(reminders[index].message);
+        }
+    }
+    </script>
+</html>
