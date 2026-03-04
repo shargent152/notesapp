@@ -20,6 +20,7 @@ import com.example.notesapp.repository.UserREPO;
 import com.example.notesapp.repository.reminderREPO;
 
 
+
 @Controller
 public class Main {
    
@@ -36,9 +37,10 @@ public class Main {
     public String home(Model model, Authentication authentication) {
         String username = authentication.getName();
         List<Reminder> reminders = rrepo.findByUserUsername(username);
-        List<Note> notes = nrepo.findByUserUsername(username);
+        List<Note> notes = nrepo.filterByTimeC(username);
         model.addAttribute("notes",notes);
         model.addAttribute("reminders",reminders);
+        model.addAttribute("filterByCreationDate",true);
         return "main";
     }
     @GetMapping("/login")
@@ -57,11 +59,11 @@ public class Main {
     }
     @PostMapping("/addNotes")
     public String saveAddedNotes(@ModelAttribute Note note,Authentication authentication) {
-        //TODO: process POST request
         String username = authentication.getName();
         User user = repo.findByUsername(username).orElseThrow();
         note.setUser(user);
         note.setTimeC(LocalDateTime.now());
+        note.setTimeE(LocalDateTime.now());
         nrepo.save(note);
         return "redirect:/";
     }
@@ -117,6 +119,39 @@ public class Main {
         rrepo.save(reminder);
         return "redirect:/";
     }
+    @GetMapping("/byCD")
+    public String notesFilteredByCD(Model model, Authentication authentication) {
+        String username = authentication.getName();
+        List<Reminder> reminders = rrepo.findByUserUsername(username);
+        List<Note> notes = nrepo.filterByTimeC(username);
+        model.addAttribute("notes",notes);
+        model.addAttribute("reminders",reminders);
+        model.addAttribute("filterByCreationDate",true);
+        return "main";
+    }
+    @GetMapping("/byDE")
+    public String noteFilteredByDE(Model model, Authentication authentication) {
+        String username = authentication.getName();
+        List<Reminder> reminders = rrepo.findByUserUsername(username);
+        List<Note> notes = nrepo.filterByTimeE(username);
+        model.addAttribute("notes",notes);
+        model.addAttribute("reminders",reminders);
+        model.addAttribute("filterByDateEdited",true);
+        return "main";
+    }
+    @GetMapping("/byT")
+    public String notesFilterByT(Model model, Authentication authentication) {
+        String username = authentication.getName();
+        List<Reminder> reminders = rrepo.findByUserUsername(username);
+        List<Note> notes = nrepo.filterByTitle(username);
+        model.addAttribute("notes",notes);
+        model.addAttribute("reminders",reminders);
+        model.addAttribute("filterByTitle",true);
+        return "main";
+    }
+    
+    
+    
     
     
     

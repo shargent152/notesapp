@@ -5,10 +5,29 @@
     <h1>HELLO Your notes and reminders will show up here</h1>
     <a href="/addNotes">Click here to add a new note</a>
     <a href="/addReminder">Click here to add a reminder</a>
+    <form name="Filter"  method="get">
+        <select id="filterSelector" onchange="this.form.action = this.value" >
+            <option value="" disabled selected hidden>Select a filter</option>
+            <option value="/byCD">Filter By the Day you created the note</option>
+            <option value="/byDE">Filter by the Last day you Edited the note</option>
+            <option value="/byT">Filter by the title</option>
+        </select>
+        <button type="submit">Press This button to filter after making your selection</button>
+    </form>
     
     <ul>
         <h1>Heres your notes</h1>
-        <li th:each="n : ${notes}">
+        <li th:if = "${filterByCreationDate}" th:each="n : ${notes}">
+            <span th:text = "${n.title}"></span>
+            <a th:href="@{/noteEditor/{id}(id=${n.id})}">Edit</a>
+            <a th:href="@{/noteDelete/{id}(id=${n.id})}">Delete</a>
+        </li>
+        <li th:if = "${filterByDateEdited}" th:each="n : ${notes}">
+            <span th:text = "${n.title}"></span>
+            <a th:href="@{/noteEditor/{id}(id=${n.id})}">Edit</a>
+            <a th:href="@{/noteDelete/{id}(id=${n.id})}">Delete</a>
+        </li>
+        <li th:if = "${filterByTitle}" th:each="n : ${notes}">
             <span th:text = "${n.title}"></span>
             <a th:href="@{/noteEditor/{id}(id=${n.id})}">Edit</a>
             <a th:href="@{/noteDelete/{id}(id=${n.id})}">Delete</a>
@@ -40,5 +59,7 @@
             alert(reminders[index].message);
         }
     }
+    
+
     </script>
 </html>
