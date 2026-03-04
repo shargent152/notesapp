@@ -17,17 +17,7 @@
     
     <ul>
         <h1>Heres your notes</h1>
-        <li th:if = "${filterByCreationDate}" th:each="n : ${notes}">
-            <span th:text = "${n.title}"></span>
-            <a th:href="@{/noteEditor/{id}(id=${n.id})}">Edit</a>
-            <a th:href="@{/noteDelete/{id}(id=${n.id})}">Delete</a>
-        </li>
-        <li th:if = "${filterByDateEdited}" th:each="n : ${notes}">
-            <span th:text = "${n.title}"></span>
-            <a th:href="@{/noteEditor/{id}(id=${n.id})}">Edit</a>
-            <a th:href="@{/noteDelete/{id}(id=${n.id})}">Delete</a>
-        </li>
-        <li th:if = "${filterByTitle}" th:each="n : ${notes}">
+        <li th:each="n : ${notes}">
             <span th:text = "${n.title}"></span>
             <a th:href="@{/noteEditor/{id}(id=${n.id})}">Edit</a>
             <a th:href="@{/noteDelete/{id}(id=${n.id})}">Delete</a>
