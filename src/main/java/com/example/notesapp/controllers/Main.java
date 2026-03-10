@@ -31,17 +31,16 @@ public class Main {
     @GetMapping("/")
     public String home(Model model, Authentication authentication) {
         String username = authentication.getName();
-        List<Reminder> reminders = rrepo.findByUserUsername(username);
+        List<Reminder> reminders = rrepo.filterByTimeC(username);
         List<Note> notes = nrepo.filterByTimeC(username);
         model.addAttribute("notes",notes);
         model.addAttribute("reminders",reminders);
-        model.addAttribute("filterByCreationDate",true);
         return "main";
     }
     @GetMapping("/byCD")
     public String notesFilteredByCD(Model model, Authentication authentication) {
         String username = authentication.getName();
-        List<Reminder> reminders = rrepo.findByUserUsername(username);
+        List<Reminder> reminders = rrepo.filterByTimeC(username);
         List<Note> notes = nrepo.filterByTimeC(username);
         model.addAttribute("notes",notes);
         model.addAttribute("reminders",reminders);
@@ -51,7 +50,7 @@ public class Main {
     @GetMapping("/byDE")
     public String noteFilteredByDE(Model model, Authentication authentication) {
         String username = authentication.getName();
-        List<Reminder> reminders = rrepo.findByUserUsername(username);
+        List<Reminder> reminders = rrepo.filterByTimeE(username);
         List<Note> notes = nrepo.filterByTimeE(username);
         model.addAttribute("notes",notes);
         model.addAttribute("reminders",reminders);
@@ -61,7 +60,7 @@ public class Main {
     @GetMapping("/byT")
     public String notesFilterByT(Model model, Authentication authentication) {
         String username = authentication.getName();
-        List<Reminder> reminders = rrepo.findByUserUsername(username);
+        List<Reminder> reminders = rrepo.filterByTitle(username);
         List<Note> notes = nrepo.filterByTitle(username);
         model.addAttribute("notes",notes);
         model.addAttribute("reminders",reminders);

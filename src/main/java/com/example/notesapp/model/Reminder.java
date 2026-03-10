@@ -17,8 +17,13 @@ public class Reminder {
     private Long id;
 
     private String Message;
+    
     @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
     private LocalDateTime time;
+
+    private LocalDateTime timeC;
+
+    private LocalDateTime timeE;
 
     @ManyToOne
     @JoinColumn(name="user_id")
@@ -54,6 +59,22 @@ public class Reminder {
 
     public void setTime(LocalDateTime time) {
         this.time = time;
+    }
+
+    public LocalDateTime getTimeC() {
+        return timeC;
+    }
+
+    public void setTimeC(LocalDateTime timeC) {
+        this.timeC = timeC;
+    }
+
+    public LocalDateTime getTimeE() {
+        return timeE;
+    }
+
+    public void setTimeE(LocalDateTime timeE) {
+        this.timeE = timeE;
     }
 
    

@@ -70,6 +70,8 @@ public class addDeleteEditController{
         String username = authentication.getName();
         User user = repo.findByUsername(username).orElseThrow();
         reminder.setUser(user);
+        reminder.setTimeC(LocalDateTime.now());
+        reminder.setTimeE(LocalDateTime.now());
         rrepo.save(reminder);
         System.out.println(reminder.getTime());
         return "redirect:/";
@@ -89,7 +91,8 @@ public class addDeleteEditController{
         Reminder existingReminder = rrepo.findById(id).orElseThrow();
         existingReminder.setTime(reminder.getTime());
         existingReminder.setMessage(reminder.getMessage());
-        rrepo.save(reminder);
+        existingReminder.setTimeE(LocalDateTime.now());
+        rrepo.save(existingReminder);
         return "redirect:/";
     }
 }

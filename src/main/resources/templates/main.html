@@ -5,6 +5,10 @@
     <h1>HELLO Your notes and reminders will show up here</h1>
     <a href="/addNotes">Click here to add a new note</a>
     <a href="/addReminder">Click here to add a reminder</a>
+    <form name="Word Filter" method="get" action="/search">
+        <input type="text" name="search" id ="search" placeholder="type to search for words or phrases your notes/reminders might have">
+        <button type="submit">Search</button>
+    </form>
     <form name="Filter"  method="get">
         <select id="filterSelector" onchange="this.form.action = this.value" >
             <option value="" disabled selected hidden>Select a filter</option>
@@ -50,6 +54,5 @@
         }
     }
     
-
     </script>
 </html>
