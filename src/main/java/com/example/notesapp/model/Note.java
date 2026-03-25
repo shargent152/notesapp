@@ -26,6 +26,10 @@ public class Note {
     @JoinColumn(name="user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name="folder_id")
+    private Folders folder;
+
     public Long getId() {
         return id;
     }
@@ -73,5 +77,13 @@ public class Note {
 
     public void setTimeC(LocalDateTime timeC) {
         this.timeC = timeC;
+    }
+
+    public Folders getFolder() {
+        return folder;
+    }
+
+    public void setFolder(Folders folder) {
+        this.folder = folder;
     }
 }

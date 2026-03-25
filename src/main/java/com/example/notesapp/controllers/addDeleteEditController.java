@@ -1,5 +1,6 @@
 package com.example.notesapp.controllers;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -9,13 +10,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.notesapp.model.Folders;
 import com.example.notesapp.model.Note;
 import com.example.notesapp.model.Reminder;
 import com.example.notesapp.model.User;
+import com.example.notesapp.repository.FolderREPO;
 import com.example.notesapp.repository.NoteREPO;
 import com.example.notesapp.repository.UserREPO;
 import com.example.notesapp.repository.reminderREPO;
+
+
+
 
 @Controller
 public class addDeleteEditController{
@@ -25,6 +32,8 @@ public class addDeleteEditController{
     private reminderREPO rrepo;
     @Autowired
     private NoteREPO nrepo;
+    @Autowired
+    private FolderREPO frepo;
     
     @GetMapping("/addNotes")
     public String addNotes(Model model) {
@@ -57,6 +66,7 @@ public class addDeleteEditController{
         existingNote.setTimeE(LocalDateTime.now());
         existingNote.setMessage(note.getMessage());
         existingNote.setTitle(note.getTitle());
+        existingNote.setFolder(note.getFolder());
         nrepo.save(existingNote);
         return "redirect:/";
     }
@@ -66,7 +76,7 @@ public class addDeleteEditController{
         return "newReminder";
     }
     @PostMapping("/addReminder")
-    public String postMethodName(@ModelAttribute Reminder reminder,Authentication authentication) {
+    public String saveAddedReminder(@ModelAttribute Reminder reminder,Authentication authentication) {
         String username = authentication.getName();
         User user = repo.findByUsername(username).orElseThrow();
         reminder.setUser(user);
@@ -95,4 +105,82 @@ public class addDeleteEditController{
         rrepo.save(existingReminder);
         return "redirect:/";
     }
+    @GetMapping("/addFolders")
+    public String addingFOlders(Model model, Authentication authentication) {
+        model.addAttribute("folder", new Folders());
+        String username = authentication.getName();
+        User user = repo.findByUsername(username).orElseThrow();
+        List<Note> notes = nrepo.filterByTimeC(username);
+        model.addAttribute("notes",notes);
+        return "newFolder";
+    }
+    @PostMapping("/addFolders")
+    public String addFolders(@ModelAttribute Folders folder, @RequestParam(required = false) List<Long> ids, Authentication authentication) {
+        //TODO: process POST request
+        String username = authentication.getName();
+        User user = repo.findByUsername(username).orElseThrow();
+        folder.setTimeC(LocalDateTime.now());
+        folder.setTimeE(LocalDateTime.now());
+        folder.setUser(user);
+        frepo.save(folder);
+        if(ids != null){
+            for (Long id : ids){
+                Note note = nrepo.findById(id).orElseThrow();
+                note.setFolder(folder);
+                nrepo.save(note);
+                System.out.println("I RAN");
+            }
+        }
+        return "redirect:/";
+    }
+    @GetMapping("/folderEditor/{id}")
+    public String editFolderGET(@PathVariable Long id, Authentication authentication, Model model) {
+        Folders folder = frepo.findById(id).orElseThrow();
+        String username = authentication.getName();
+        List<Note> notesOut = nrepo.filterByTimeC(username);
+        List<Note> notesIn = folder.getNote();
+        model.addAttribute("notesout",notesOut);
+        model.addAttribute("notesin",notesIn);
+        model.addAttribute("folder",folder);
+        return "editFolder";
+    }
+    @PostMapping("/folderEditor/{id}")
+    public String editFolderPOST(@PathVariable Long id,@ModelAttribute Folders folder, @RequestParam(required = false) List<Long> rids, @RequestParam(required = false)List<Long> aids, Authentication authentication) {
+        //TODO: process POST request
+        Folders eFolders = frepo.findById(id).orElseThrow();
+        eFolders.setTimeE(LocalDateTime.now());
+        eFolders.setTitle(folder.getTitle());
+        eFolders.setNote(folder.getNote());
+        frepo.save(eFolders);
+         if(aids != null){
+            for (Long ids : aids){
+                Note note = nrepo.findById(ids).orElseThrow();
+                note.setFolder(folder);
+                nrepo.save(note);
+                System.out.println("I RAN");
+            }
+        }
+        if(rids != null){
+            for (Long ids : rids){
+                Note note = nrepo.findById(ids).orElseThrow();
+                note.setFolder(null);
+                nrepo.save(note);
+                System.out.println("I RAN");
+            }
+        }
+        return "redirect:/";
+    }
+    @GetMapping("/folderDelete/{id}")
+    public String folderdelete(@PathVariable Long id, Authentication authentication) {
+        nrepo.removeFolderFromNotes(id);
+        frepo.deleteById(id);
+
+        List<Note> test = nrepo.filterByTimeC(authentication.getName());
+        System.out.println("NOTES FOUND: " + test.size());
+        return "redirect:/";
+    }
+    
+    
+    
+    
 }

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<html>
+    <span>Hello this is your</span>
+    <span th:text="${folder.title}"></span>
+    <span>Folder</span>
+    <ul>
+        <h1>Heres your notes</h1>
+            <li th:each="n : ${notes}" >
+                <span th:text = "${n.title}"></span>
+                <a th:href="@{/noteEditor/{id}(id=${n.id})}">Edit</a>
+                <a th:href="@{/noteDelete/{id}(id=${n.id})}">Delete</a>
+                <a th:href="@{https://mail.google.com/mail/ (view='cm', fs='1', su='This is my note: ' + ${n.title}, body='the note contains: ' + ${n.Message})}">
+                    Share
+                </a>
+            </li>
+    </ul>
+    <a href="/">Go Back</a>
+</html>

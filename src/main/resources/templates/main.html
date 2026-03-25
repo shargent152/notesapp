@@ -5,6 +5,7 @@
     <h1>HELLO Your notes and reminders will show up here</h1>
     <a href="/addNotes">Click here to add a new note</a>
     <a href="/addReminder">Click here to add a reminder</a>
+    <a href="/addFolders">Click here to add a folder</a>
     <form name="Word Filter" method="get" action="/search">
         <input type="text" name="search" id ="search" placeholder="type to search for words or phrases your notes/reminders might have">
         <button type="submit">Search</button>
@@ -20,12 +21,15 @@
     </form>
     
     <ul>
-        <h1>Heres your notes</h1>
-        <li th:each="n : ${notes}">
-            <span th:text = "${n.title}"></span>
-            <a th:href="@{/noteEditor/{id}(id=${n.id})}">Edit</a>
-            <a th:href="@{/noteDelete/{id}(id=${n.id})}">Delete</a>
-        </li>
+        <h1>Heres your notes not in a folder</h1>
+            <li th:each="n : ${notes}" >
+                <span th:text = "${n.title}"></span>
+                <a th:href="@{/noteEditor/{id}(id=${n.id})}">Edit</a>
+                <a th:href="@{/noteDelete/{id}(id=${n.id})}">Delete</a>
+                <a th:href="@{https://mail.google.com/mail/ (view='cm', fs='1', su='This is my note: ' + ${n.title}, body='the note contains: ' + ${n.Message})}">
+                    Share
+                </a>
+            </li>
     </ul>
     <ul>
         <h1>Heres your reminders</h1>
@@ -33,6 +37,18 @@
             <span th:text = "${r.Message}"></span>
             <a th:href="@{/reminderEditor/{id}(id=${r.id})}">Edit</a>
             <a th:href="@{/reminderDelete/{id}(id=${r.id})}">Delete</a>
+            <a th:href="@{https://mail.google.com/mail/ (view='cm', fs='1', su='This is my Reminder', body= ${r.Message} + 'Set For' + ${r.time})}">
+                    Share
+                </a>
+        </li>
+    </ul>
+    <ul>
+        <h1>Heres your folders</h1>
+        <li th:each="f : ${folders}">
+            <span th:text = "${f.title}"></span>
+            <a th:href="@{/FolderView/{id}(id=${f.id})}">View inside folder</a>
+            <a th:href="@{/folderEditor/{id}(id=${f.id})}">Edit</a>
+            <a th:href="@{/folderDelete/{id}(id=${f.id})}">Delete</a>
         </li>
     </ul>
     <script th:inline = "javascript">

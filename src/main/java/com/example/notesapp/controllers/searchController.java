@@ -9,8 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.notesapp.model.Folders;
 import com.example.notesapp.model.Note;
 import com.example.notesapp.model.Reminder;
+import com.example.notesapp.repository.FolderREPO;
 import com.example.notesapp.repository.NoteREPO;
 import com.example.notesapp.repository.UserREPO;
 import com.example.notesapp.repository.reminderREPO;
@@ -24,6 +26,8 @@ public class searchController {
     private reminderREPO rrepo;
     @Autowired
     private NoteREPO nrepo;
+    @Autowired
+    private FolderREPO frepo;
 
 
 
@@ -36,6 +40,8 @@ public class searchController {
         model.addAttribute("notes",notes);
         model.addAttribute("reminders",reminders);
         model.addAttribute("searched",search);
+        List<Folders> folders = frepo.filterByWordsTimeC(username,search);
+        model.addAttribute("folders",folders);
         return "search";
     }
      
@@ -47,6 +53,8 @@ public class searchController {
         model.addAttribute("notes",notes);
         model.addAttribute("reminders",reminders);
         model.addAttribute("searched",search);
+        List<Folders> folders = frepo.filterByWordsTimeC(username,search);
+        model.addAttribute("folders",folders);
         return "search";
     }
     @GetMapping("/search/byDE")
@@ -57,6 +65,8 @@ public class searchController {
         model.addAttribute("notes",notes);
         model.addAttribute("reminders",reminders);
         model.addAttribute("searched",search);
+        List<Folders> folders = frepo.filterByWordsTimeE(username,search);
+        model.addAttribute("folders",folders);
         return "search";
     }
     @GetMapping("/search/byT")
@@ -67,6 +77,8 @@ public class searchController {
         model.addAttribute("notes",notes);
         model.addAttribute("reminders",reminders);
         model.addAttribute("searched",search);
+        List<Folders> folders = frepo.filterByWordsTitle(username,search);
+        model.addAttribute("folders",folders);
         return "search";
     }
 }

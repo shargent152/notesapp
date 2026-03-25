@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <form th:object ="${folder}"method="post" th:action="@{/folderEditor/{id}(id=${folder.id})}">
+        <input th:field ="*{title}" placeholder="TITLE"/>
+        <div th:each = "note : ${notesin}">
+            <h3>Select a note already in your Folder to take it out</h3>
+            
+            <input th:feild = "*{note}" type="checkbox" th:value="${note.id}" name="rids">
+                
+            <span th:text = "${note.title}"></span><br/>
+        </div>
+        <div th:each = "note : ${notesout}">
+            <h3>Select a Note to add to your folder</h3>
+            
+            <input th:feild = "*{note}" type="checkbox" th:value="${note.id}" name="aids">
+            
+            <span th:text = "${note.title}"></span><br/>
+        </div>
+        <button type="submit">Save</button>
+    </form>
+    
+</html>

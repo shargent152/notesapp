@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <form th:object ="${folder}"method="post" action="/addFolders">
+        <input th:field ="*{title}" placeholder="TITLE"/>
+        <div th:each = "note : ${notes}">
+                <input th:feild = "*{note}" type="checkbox" th:value="${note.id}" name="ids">
+                <span th:text = "${note.title}"></span><br/>
+        </div>
+        <button type="submit">Save</button>
+    </form>
+    
+</html>
